@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import Create from './components/create.component';
 import Edit from './components/edit.component';
 import Index from './components/index.component';
+import Pagination from './components/page.component';
 
 class App extends Component {
   render() {
@@ -35,6 +36,11 @@ class App extends Component {
                     Index
                   </Link>
                 </li>
+                <li className='nav-item'>
+                  <Link to={'/page'} className='nav-link'>
+                    Pagination
+                  </Link>
+                </li>
               </ul>
             </div>
           </nav>{' '}
@@ -44,6 +50,7 @@ class App extends Component {
             <Route exact path='/create' component={Create} />
             <Route path='/edit/:id' component={Edit} />
             <Route path='/index' component={Index} />
+            <Route path='/page' component={Pagination} />
           </Switch>
         </div>
       </Router>

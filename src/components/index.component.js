@@ -11,7 +11,21 @@ export default class Index extends Component {
   }
 
   // Another way of refreshing page, but make sure to check the state change
-  componentDidUpdate() {
+  componentDidUpdate(prevProps, prevState) {
+    axios
+      .get('http://localhost:8080/actors')
+      .then(response => {
+        const { actors } = this.state;
+        if (actors !== prevState.actors) {
+          this.setState({ actors: response.data });
+        }
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+  }
+
+  componentDidMount() {
     axios
       .get('http://localhost:8080/actors')
       .then(response => {
@@ -22,23 +36,6 @@ export default class Index extends Component {
       });
   }
 
-  componentDidMount() {
-    fetch('http://localhost:8080/actors')
-      .then(response => response.json())
-      .then(mydata => {
-        // schedules an update to a component's state object, when the statechanges, re-render
-        this.setState({ actors: mydata });
-      })
-      .catch(console.log);
-    // axios
-    //   .get('http://localhost:8080/actors')
-    //   .then(response => {
-    //     this.setState({ actors: response.data });
-    //   })
-    //   .catch(function(error) {
-    //     console.log(error);
-    //   });
-  }
   tabRow() {
     return this.state.actors.map(function(object, i) {
       return <TableRow obj={object} key={i} />;
