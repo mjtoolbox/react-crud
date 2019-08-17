@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
-import MaterialTable from 'material-table';
+import 'react-table/react-table.css';
+import ReactTable from 'react-table';
 import axios from 'axios';
+
+const apiurl = 'http://localhost:8080/actors';
 
 export default class Page extends Component {
   constructor(props) {
@@ -13,7 +16,7 @@ export default class Page extends Component {
   // Another way of refreshing page, but make sure to check the state change
   componentDidUpdate(prevProps, prevState) {
     axios
-      .get('http://localhost:8080/actors')
+      .get(apiurl)
       .then(response => {
         const { actors } = this.state;
         if (actors !== prevState.actors) {
@@ -27,7 +30,7 @@ export default class Page extends Component {
 
   componentDidMount() {
     axios
-      .get('http://localhost:8080/actors')
+      .get(apiurl)
       .then(response => {
         this.setState({ actors: response.data });
       })
@@ -37,40 +40,45 @@ export default class Page extends Component {
   }
 
   render() {
+    const columns = [
+      {
+        Header: 'ID',
+        accessor: 'actorId',
+        width: 100
+      },
+      {
+        Header: 'First Name',
+        accessor: 'firstName',
+        width: 200
+      },
+      {
+        Header: 'Last Name',
+        accessor: 'lastName',
+        width: 200
+      },
+      {
+        Header: 'Last Updated',
+        accessor: 'lastUpdated',
+        width: 300
+      }
+      // ,
+      // {
+      //   Header: '',
+      //   Cell: row => (
+      //     <div>
+      //       <button className='btn btn-primary'>Edit</button>{' '}
+      //       <button className='btn btn-danger'>Delete</button>
+      //     </div>
+      //   )
+      // }
+    ];
+
     return (
-      <MaterialTable
-        title='Editable Example'
-        columns={this.state.columns}
+      <ReactTable
         data={this.state.actors}
-        editable={{
-          onRowAdd: newData =>
-            new Promise(resolve => {
-              setTimeout(() => {
-                resolve();
-                const data = [...this.state.data];
-                data.push(newData);
-                this.setState({ ...this.state, data });
-              }, 600);
-            }),
-          onRowUpdate: (newData, oldData) =>
-            new Promise(resolve => {
-              setTimeout(() => {
-                resolve();
-                const data = [...this.state.actors];
-                data[data.indexOf(oldData)] = newData;
-                this.setState({ ...this.state, actors });
-              }, 600);
-            }),
-          onRowDelete: oldData =>
-            new Promise(resolve => {
-              setTimeout(() => {
-                resolve();
-                const data = [...this.state.data];
-                data.splice(data.indexOf(oldData), 1);
-                this.setState({ ...this.state, actors });
-              }, 600);
-            })
-        }}
+        columns={columns}
+        className='-striped -highlight'
+        defaultPageSize={10}
       />
     );
   }

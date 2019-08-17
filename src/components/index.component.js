@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import TableRow from './TableRow';
 
+const apiurl = 'http://localhost:8080/actors';
+
 export default class Index extends Component {
   constructor(props) {
     super(props);
@@ -13,7 +15,7 @@ export default class Index extends Component {
   // Another way of refreshing page, but make sure to check the state change
   componentDidUpdate(prevProps, prevState) {
     axios
-      .get('http://localhost:8080/actors')
+      .get(apiurl)
       .then(response => {
         const { actors } = this.state;
         if (actors !== prevState.actors) {
@@ -27,7 +29,7 @@ export default class Index extends Component {
 
   componentDidMount() {
     axios
-      .get('http://localhost:8080/actors')
+      .get(apiurl)
       .then(response => {
         this.setState({ actors: response.data });
       })

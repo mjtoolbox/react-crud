@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
+const apiurl = 'http://localhost:8080/actors';
+
 export default class Edit extends Component {
   constructor(props) {
     super(props);
@@ -16,7 +18,7 @@ export default class Edit extends Component {
   }
   componentDidMount() {
     axios
-      .get('http://localhost:8080/actors/' + this.props.match.params.id)
+      .get(apiurl + '/' + this.props.match.params.id)
       .then(response => {
         this.setState({
           id: response.data.actorId,
@@ -45,12 +47,10 @@ export default class Edit extends Component {
       firstName: this.state.first_name,
       lastName: this.state.last_name
     };
-    axios
-      .put('http://localhost:8080/actors/' + this.state.id, obj)
-      .then(res => {
-        console.log(res.data);
-        this.props.history.push('/index');
-      });
+    axios.put(apiurl + '/' + this.state.id, obj).then(res => {
+      console.log(res.data);
+      this.props.history.push('/page');
+    });
   }
 
   render() {

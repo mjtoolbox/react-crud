@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
+const apiurl = 'http://localhost:8080/actors';
+
+
 export default class Create extends Component {
   constructor(props) {
     super(props);
@@ -34,7 +37,7 @@ export default class Create extends Component {
       lastName: this.state.last_name
     };
 
-    axios.post('http://localhost:8080/actors', obj).then(res => {
+    axios.post(apiurl, obj).then(res => {
       console.log(res.data);
       this.props.history.push('/index');
     });
